@@ -1,0 +1,56 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "התחברות ל-SmartGrade Secure",
+        "description": "הזן את מספר הטלפון הרשום באפליקציית SmartGrade Secure (לדוגמה 05XXXXXXXX). יישלח אליו קוד ב-SMS.",
+        "data": {
+          "mobile": "מספר טלפון"
+        },
+        "data_description": {
+          "mobile": "אותו מספר שאיתו אתה מתחבר לאפליקציית SmartGrade Secure."
+        }
+      },
+      "code": {
+        "title": "קוד SMS",
+        "description": "הזן את הקוד שנשלח ב-SMS למספר {mobile}.",
+        "data": {
+          "code": "קוד SMS"
+        }
+      },
+      "reauth_confirm": {
+        "title": "התחברות מחדש ל-SmartGrade",
+        "description": "ההתחברות ל-SmartGrade פגה כל 30 יום. לחץ שלח כדי לקבל קוד SMS חדש למספר {mobile}."
+      }
+    },
+    "error": {
+      "cannot_connect": "לא ניתן להתחבר לענן של SmartGrade.",
+      "invalid_mobile": "הענן של SmartGrade דחה את מספר הטלפון.",
+      "invalid_code": "קוד ה-SMS שגוי או שפג תוקפו.",
+      "unknown": "שגיאה לא צפויה."
+    },
+    "abort": {
+      "already_configured": "החשבון הזה כבר מוגדר.",
+      "reauth_successful": "ההתחברות מחדש הצליחה.",
+      "wrong_account": "מספר הטלפון שייך לחשבון SmartGrade אחר מזה שמתחבר מחדש."
+    }
+  },
+  "entity": {
+    "switch": {
+      "relay": {
+        "name": "ממסר {number}"
+      }
+    }
+  },
+  "exceptions": {
+    "token_expired": {
+      "message": "ההתחברות ל-SmartGrade פגה (תקפה ל-30 יום). יש להתחבר מחדש עם קוד SMS חדש."
+    },
+    "update_failed": {
+      "message": "שגיאה בתקשורת עם הענן של SmartGrade: {error}"
+    },
+    "switch_failed": {
+      "message": "הפעלת המכשיר נכשלה: {error}"
+    }
+  }
+}

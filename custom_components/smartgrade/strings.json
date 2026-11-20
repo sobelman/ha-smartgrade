@@ -1,0 +1,56 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "SmartGrade Secure login",
+        "description": "Enter the phone number registered in the SmartGrade Secure app (for example 05XXXXXXXX). An SMS code will be sent to it.",
+        "data": {
+          "mobile": "Phone number"
+        },
+        "data_description": {
+          "mobile": "The same number you use to log in to the SmartGrade Secure app."
+        }
+      },
+      "code": {
+        "title": "SMS code",
+        "description": "Enter the code that was sent by SMS to {mobile}.",
+        "data": {
+          "code": "SMS code"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate SmartGrade",
+        "description": "The SmartGrade login expires every 30 days. Submit to send a new SMS code to {mobile}."
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the SmartGrade cloud.",
+      "invalid_mobile": "The SmartGrade cloud rejected this phone number.",
+      "invalid_code": "The SMS code is wrong or has expired.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This account is already configured.",
+      "reauth_successful": "Re-authentication was successful.",
+      "wrong_account": "This phone number belongs to a different SmartGrade account than the one being re-authenticated."
+    }
+  },
+  "entity": {
+    "switch": {
+      "relay": {
+        "name": "Relay {number}"
+      }
+    }
+  },
+  "exceptions": {
+    "token_expired": {
+      "message": "The SmartGrade login has expired (it is valid for 30 days). Re-authenticate with a new SMS code."
+    },
+    "update_failed": {
+      "message": "Error communicating with the SmartGrade cloud: {error}"
+    },
+    "switch_failed": {
+      "message": "Failed to switch the device: {error}"
+    }
+  }
+}

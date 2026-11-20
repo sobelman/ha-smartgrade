@@ -1,0 +1,26 @@
+{
+  "domain": "smartgrade",
+  "name": "SmartGrade Secure (unofficial)",
+  "categories": [
+    "plugs_switches",
+    "climate.water_heaters",
+    "energy.meters_monitoring"
+  ],
+  "codeowners": [
+    "@sobelman"
+  ],
+  "config_flow": true,
+  "connectivity": [
+    "cloud"
+  ],
+  "dependencies": [],
+  "documentation": "https://github.com/sobelman/ha-smartgrade",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/sobelman/ha-smartgrade/issues",
+  "loggers": [
+    "custom_components.smartgrade"
+  ],
+  "requirements": [],
+  "version": "0.1.0"
+}
