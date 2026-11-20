@@ -1,10 +1,10 @@
-<div align="center">
+<div align="center" dir="rtl">
 
-# SmartGrade Secure for Home Assistant
+# SmartGrade Secure ל-Home Assistant
 
-**Control and monitor your SmartGrade (IoTech Verticals / Dealor) smart switches from Home Assistant.**
+**שליטה וניטור של המפסקים החכמים של SmartGrade (IoTech Verticals / דילאור) מתוך Home Assistant.**
 
-**English** | [עברית](README.he.md)
+[English](README.en.md) | **עברית**
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration)
 [![Validate](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml)
@@ -12,142 +12,142 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub release](https://img.shields.io/github/v/release/sobelman/ha-smartgrade)](https://github.com/sobelman/ha-smartgrade/releases)
 
-<img src="images/smartgrade-product.jpg" alt="SmartGrade smart boiler switch" width="420">
+<img src="images/smartgrade-product.jpg" alt="מתג חכם לדוד של SmartGrade" width="420">
 
 </div>
 
+<div dir="rtl">
+
 > [!WARNING]
-> This is an **unofficial**, community-made integration. It is not affiliated with, endorsed by, or supported by IoTech Verticals or Dealor. See the [Disclaimer](#disclaimer).
+> זוהי אינטגרציה **לא-רשמית** שנבנתה על ידי הקהילה. היא אינה קשורה ל-IoTech Verticals או לדילאור, ואינה נתמכת או מאושרת על ידן. ראו [הסתייגות](#הסתייגות).
 
-## About
+## על הפרויקט
 
-**SmartGrade Secure** is the Android/iOS app for the Wi-Fi smart switches made by **IoTech Verticals** and sold in Israel by **Dealor (דילאור)**, best known for the smart **boiler (dud shemesh) switch** with a glass touch panel. The devices only talk to the vendor's cloud; there is no local API.
+**SmartGrade Secure** היא האפליקציה (אנדרואיד/iOS) של המפסקים החכמים מבוססי Wi-Fi של **IoTech Verticals**, שנמכרים בישראל על ידי **דילאור**. המוצר המוכר ביותר הוא **המתג החכם לדוד** עם פאנל מגע מזכוכית. המכשירים מדברים רק עם הענן של היצרן, ואין להם ממשק מקומי.
 
-This integration (domain `smartgrade`) logs in to the same cloud the app uses, with your phone number and an SMS code, and adds your devices to Home Assistant: you can switch them on and off, read live power, current and voltage, and use them in automations, dashboards and the Energy dashboard (via a Riemann-sum helper).
+האינטגרציה (domain: `smartgrade`) מתחברת לאותו ענן שהאפליקציה משתמשת בו, עם מספר הטלפון שלך וקוד SMS, ומוסיפה את המכשירים ל-Home Assistant: אפשר להדליק ולכבות אותם, לקרוא הספק, זרם ומתח בזמן אמת, ולהשתמש בהם באוטומציות, בדשבורדים ובלוח האנרגיה (דרך עזר Riemann sum).
 
-## Features
+## יכולות
 
-- ✅ UI setup: phone number → SMS code. No YAML.
-- ✅ One **switch** entity per relay (1–3 relays per device).
-- ✅ **Power (W)**, **current (A)** and **voltage (V)** sensors for every device that reports metering.
-- ✅ Diagnostic **Wi-Fi signal strength** sensor (disabled by default).
-- ✅ Devices grouped by unit, with model and firmware version.
-- ✅ Entities become *unavailable* when the cloud reports the device offline.
-- ✅ Simple re-sign-in when the vendor's 30-day login expires ([why](#%EF%B8%8F-signing-in-again-once-a-month)).
-- ✅ Downloadable diagnostics with the token and phone number redacted.
-- ✅ English and Hebrew translations.
+- ✅ הגדרה מלאה מהממשק: מספר טלפון ← קוד SMS. בלי YAML.
+- ✅ ישות **switch** לכל ממסר (1–3 ממסרים למכשיר).
+- ✅ חיישני **הספק (W)**, **זרם (A)** ו**מתח (V)** לכל מכשיר שמדווח צריכה.
+- ✅ חיישן אבחון של **עוצמת קליטת Wi-Fi** (כבוי כברירת מחדל).
+- ✅ כל מכשיר מופיע כמכשיר נפרד עם דגם וגרסת קושחה.
+- ✅ הישויות הופכות ל*לא זמינות* כשהענן מדווח שהמכשיר מנותק.
+- ✅ התחברות מחדש פשוטה כשתוקף ההתחברות (30 יום, מגבלה של היצרן) פג ([למה](#%EF%B8%8F-התחברות-מחדש-פעם-בחודש)).
+- ✅ קובץ אבחון להורדה, שבו הטוקן ומספר הטלפון מוסתרים.
+- ✅ תרגום לאנגלית ולעברית.
 
-## Supported devices
+## מכשירים נתמכים
 
-Relay devices are exposed as switches. Tested live: **product 8, boiler switch (Gewiss 3-module)**. The others use the same API and are expected to work; please [open an issue](https://github.com/sobelman/ha-smartgrade/issues) with your results.
+מכשירים עם ממסר מוצגים כמתגים. נבדק בפועל: **מוצר 8, מתג לדוד (גוויס 3 מקום)**. שאר הדגמים משתמשים באותו API וצפויים לעבוד. נשמח אם [תפתחו issue](https://github.com/sobelman/ha-smartgrade/issues) עם התוצאות.
 
-| product_id | Device | Status |
+| product_id | מכשיר | סטטוס |
 |---|---|---|
-| 8 | Boiler switch (Gewiss 3-module) | ✅ Tested |
-| 6 | Boiler switch (under plaster) | 🟡 Expected to work |
-| 7 | Wi-Fi switch (box 55) | 🟡 Expected to work |
-| 2, 5, 16, 17 | Smart sockets | 🟡 Expected to work |
-| 9–13 | Light switches (1–3 gangs) | 🟡 Expected to work |
-| 14, 15, 22 | DIN-rail switches (1-phase, 3-phase, 63A) | 🟡 Expected to work |
-| 18, 19, 36 | Shutters | ❌ Not supported yet |
-| 20, 24, 25, 30, 35 | Thermostat / IR / A/C | ❌ Not supported yet |
-| 26–29, 31 | Sensors | ❌ Not supported yet |
-| 21 | Zigbee gateway | ❌ Not supported |
+| 8 | מתג לדוד (גוויס 3 מקום) | ✅ נבדק |
+| 6 | מתג לדוד (תחת הטיח) | 🟡 צפוי לעבוד |
+| 7 | מתג Wi-Fi (קופסה 55) | 🟡 צפוי לעבוד |
+| 2, 5, 16, 17 | שקעים חכמים | 🟡 צפוי לעבוד |
+| 9–13 | מפסקי תאורה (1–3 מפסקים) | 🟡 צפוי לעבוד |
+| 14, 15, 22 | מפסקי דין (חד-פאזי, תלת-פאזי, 63A) | 🟡 צפוי לעבוד |
+| 18, 19, 36 | תריסים | ❌ עדיין לא נתמך |
+| 20, 24, 25, 30, 35 | תרמוסטט / IR / מזגן | ❌ עדיין לא נתמך |
+| 26–29, 31 | חיישנים | ❌ עדיין לא נתמך |
+| 21 | גייטוויי Zigbee | ❌ לא נתמך |
 
-## Requirements
+## דרישות
 
-- Home Assistant **2025.2** or newer.
-- A SmartGrade Secure account with at least one device, and the phone that receives its SMS codes.
-- Internet access from Home Assistant (cloud only).
+- Home Assistant בגרסה **2025.2** ומעלה.
+- חשבון SmartGrade Secure עם מכשיר אחד לפחות, והטלפון שמקבל את קודי ה-SMS שלו.
+- גישה לאינטרנט מ-Home Assistant (ענן בלבד).
 
-## Installation
+## התקנה
 
-### Marketplace / HACS (recommended)
+### דרך ה-Marketplace או HACS (מומלץ)
 
-Click the button below. On Home Assistant **2026.11+** it opens the repository in the built-in **Marketplace** (Settings → Marketplace); on older versions it opens **HACS**. Either way you are offered to add it as a custom repository, then click **Download** and restart.
+לחצו על הכפתור. ב-Home Assistant **2026.11 ומעלה** הוא פותח את המאגר ב-**Marketplace** המובנה (הגדרות ← Marketplace); בגרסאות ישנות יותר הוא פותח את **HACS**. בשני המקרים תוצע הוספה כמאגר מותאם אישית, ואז לוחצים **Download** ומפעילים מחדש.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration)
+[![פתיחת המאגר ב-HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration)
 
-Or manually in HACS:
+או ידנית ב-HACS:
 
-1. Open **HACS** → ⋮ (top right) → **Custom repositories**.
-2. Repository: `https://github.com/sobelman/ha-smartgrade`, type: **Integration** → **Add**.
-3. Search for **SmartGrade Secure**, open it and click **Download**.
-4. **Restart** Home Assistant.
+1. פתחו את **HACS** ← ⋮ (למעלה מימין) ← **Custom repositories**.
+2. כתובת המאגר: `https://github.com/sobelman/ha-smartgrade`, סוג: **Integration** ← **Add**.
+3. חפשו **SmartGrade Secure**, פתחו ולחצו **Download**.
+4. **הפעילו מחדש** את Home Assistant.
 
-### Manual
+### התקנה ידנית
 
-1. Download the [latest release](https://github.com/sobelman/ha-smartgrade/releases).
-2. Copy the `custom_components/smartgrade` folder into your Home Assistant `config/custom_components/` folder, so that you have `config/custom_components/smartgrade/manifest.json`.
-3. **Restart** Home Assistant.
+1. הורידו את [הגרסה האחרונה](https://github.com/sobelman/ha-smartgrade/releases).
+2. העתיקו את התיקייה `custom_components/smartgrade` לתיקייה `config/custom_components/` של Home Assistant, כך שיתקבל `config/custom_components/smartgrade/manifest.json`.
+3. **הפעילו מחדש** את Home Assistant.
 
-## Configuration
+## הגדרה
 
-[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=smartgrade)
+[![הוספת האינטגרציה ב-Home Assistant](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=smartgrade)
 
-1. **Settings → Devices & services → Add integration**, search for **SmartGrade Secure**.
-2. Enter the phone number registered in the SmartGrade Secure app, in the same format you use in the app (`05XXXXXXXX`). An SMS is sent to it.
-3. Enter the SMS code. Your devices appear right away.
+1. **הגדרות ← מכשירים ושירותים ← הוספת אינטגרציה**, וחפשו **SmartGrade Secure**.
+2. הזינו את מספר הטלפון הרשום באפליקציה, באותו פורמט שבו אתם מתחברים לאפליקציה (`05XXXXXXXX`). יישלח אליו SMS.
+3. הזינו את הקוד. המכשירים יופיעו מיד.
 
-<!-- SCREENSHOTS PLACEHOLDER: add images/config-step-phone.png, images/config-step-code.png and
-images/device-page.png, then replace this comment with:
-| Step 1: phone number | Step 2: SMS code | Result |
-|---|---|---|
-| ![Phone number step](images/config-step-phone.png) | ![SMS code step](images/config-step-code.png) | ![Device page](images/device-page.png) |
--->
-> 📸 *Screenshots of the setup flow are coming soon.*
+<!-- מקום לצילומי מסך: הוסיפו את images/config-step-phone.png, images/config-step-code.png ו-images/device-page.png
+והחליפו את ההערה הזו בטבלת תמונות. -->
+> 📸 *צילומי מסך של תהליך ההגדרה יתווספו בקרוב.*
 
-There are no options to set. State is polled every 30 seconds; the cloud refreshes power readings about once a minute.
+אין אפשרויות נוספות להגדיר. המצב מתעדכן כל 30 שניות; הענן מעדכן את קריאות הצריכה בערך פעם בדקה.
 
-## ⚠️ Signing in again once a month
+## ⚠️ התחברות מחדש פעם בחודש
 
 > [!IMPORTANT]
-> ⚠️ **About once a month, you'll need to sign in again with an SMS code.** It takes about 20 seconds. This is a known limitation of the vendor's service, not a bug.
+> ⚠️ **בערך פעם בחודש צריך להתחבר מחדש עם קוד SMS.** זה לוקח כ-20 שניות. זו מגבלה ידועה של שירות היצרן, לא תקלה.
 
-SmartGrade's cloud keeps you signed in for **30 days** at a time. After that, it asks for a new SMS code. This is how the vendor built the service: there is no way to extend the sign-in or renew it automatically, and the official SmartGrade app works the same way.
+הענן של SmartGrade משאיר אתכם מחוברים **30 יום** בכל פעם, ואחר כך מבקש קוד SMS חדש. כך היצרן בנה את השירות: אי אפשר להאריך את ההתחברות או לחדש אותה אוטומטית, וגם האפליקציה הרשמית של SmartGrade עובדת באותה צורה.
 
-So, about once a month:
+לכן, בערך פעם בחודש:
 
-1. Home Assistant shows a notification that SmartGrade needs you to sign in again (under **Settings**).
-2. Open it and press **Submit**. An SMS code is sent to your phone.
-3. Type in the code. That's it.
+1. תופיע ב-Home Assistant הודעה שצריך להתחבר מחדש ל-SmartGrade (תחת **הגדרות**).
+2. פותחים אותה ולוחצים **שלח**. קוד SMS יישלח לטלפון.
+3. מקלידים את הקוד, וזהו.
 
-Until you do, your SmartGrade entities show as *unavailable* in Home Assistant. The devices themselves, and any timers you set in the app, keep working as usual.
+עד שמתחברים מחדש, הישויות של SmartGrade יופיעו ב-Home Assistant כ*לא זמינות*. המכשירים עצמם, וכל טיימר שהגדרתם באפליקציה, ממשיכים לעבוד כרגיל.
 
-## Entities
+## ישויות
 
-For a device named *Boiler*:
+עבור מכשיר בשם *Boiler*:
 
-| Entity | Example ID | Description |
+| ישות | מזהה לדוגמה | תיאור |
 |---|---|---|
-| Switch | `switch.boiler` | Relay 1. Additional relays: `switch.boiler_relay_2`, `…_relay_3` (or the relay names set in the app). |
-| Power | `sensor.boiler_power` | Live power draw, W. |
-| Current | `sensor.boiler_current` | Live current, A. |
-| Voltage | `sensor.boiler_voltage` | Mains voltage, V. |
-| Signal strength | `sensor.boiler_signal_strength` | Wi-Fi RSSI, dBm. Diagnostic, disabled by default. |
+| מתג | `switch.boiler` | ממסר 1. ממסרים נוספים: `switch.boiler_relay_2`, `…_relay_3` (או השמות שהוגדרו באפליקציה). |
+| הספק | `sensor.boiler_power` | צריכת הספק נוכחית, W. |
+| זרם | `sensor.boiler_current` | זרם נוכחי, A. |
+| מתח | `sensor.boiler_voltage` | מתח רשת, V. |
+| עוצמת קליטה | `sensor.boiler_signal_strength` | RSSI של ה-Wi-Fi, dBm. חיישן אבחון, כבוי כברירת מחדל. |
 
-**Energy dashboard:** the cloud's live reading has no kWh counter. Create an *Integral (Riemann sum)* helper from `sensor.boiler_power` (method *left*, unit prefix *k*) and add it to the Energy dashboard.
+**לוח האנרגיה:** הקריאה החיה מהענן לא כוללת מונה קוט"ש. צרו עזר *Integral (Riemann sum)* מ-`sensor.boiler_power` (שיטה *left*, קידומת *k*) והוסיפו אותו ללוח האנרגיה.
 
-## Important notes
+## חשוב לדעת
 
-- **A new SMS code is needed every 30 days.** See [Signing in again once a month](#%EF%B8%8F-signing-in-again-once-a-month).
-- **Possible conflict with the phone app.** It has not been confirmed whether a new login from Home Assistant signs the phone app out (or the reverse). If your app suddenly asks you to log in again, that is probably why; both can be logged in again afterwards.
-- **Cloud only.** Devices cannot be controlled locally. If the vendor's cloud or your internet connection is down, the entities become unavailable.
-- **Timers and scenes** you set in the app keep running in the cloud; this integration does not show or change them.
-- Switch commands are sent through the cloud; the state shown is re-read from the cloud a moment later.
+- **כל 30 יום צריך קוד SMS חדש.** ראו [התחברות מחדש פעם בחודש](#%EF%B8%8F-התחברות-מחדש-פעם-בחודש).
+- **התנגשות אפשרית עם האפליקציה בטלפון.** עדיין לא אומת אם התחברות חדשה מ-Home Assistant מנתקת את האפליקציה בטלפון (או להפך). אם האפליקציה פתאום מבקשת להתחבר מחדש, זו כנראה הסיבה; אפשר להתחבר שוב בשני המקומות.
+- **ענן בלבד.** אין שליטה מקומית במכשירים. אם הענן של היצרן או האינטרנט שלכם לא זמינים, הישויות יהיו לא זמינות.
+- **טיימרים ותרחישים** שהוגדרו באפליקציה ממשיכים לרוץ בענן; האינטגרציה לא מציגה ולא משנה אותם.
+- פקודות הדלקה/כיבוי עוברות דרך הענן; המצב המוצג נקרא מחדש מהענן רגע אחרי.
 
-## Troubleshooting
+## פתרון בעיות
 
-| Problem | What to do |
+| בעיה | מה לעשות |
 |---|---|
-| *"The SmartGrade cloud rejected this phone number"* | Use the exact number registered in the app, in `05XXXXXXXX` format. |
-| No SMS arrives | Wait a minute and try again; check the number. Too many requests may be throttled by the vendor. |
-| *"The SMS code is wrong or has expired"* | Codes are single use and short-lived. Go back and request a new one. |
-| Entities unavailable | Check the device is online in the SmartGrade app, and that Home Assistant has internet access. |
-| Asked to sign in again | Normal, once every 30 days. See [Signing in again once a month](#%EF%B8%8F-signing-in-again-once-a-month). |
-| No power sensors | The device does not report metering (not every model has a meter). |
+| *"הענן של SmartGrade דחה את מספר הטלפון"* | השתמשו בדיוק במספר הרשום באפליקציה, בפורמט `05XXXXXXXX`. |
+| לא מגיע SMS | חכו דקה ונסו שוב; בדקו את המספר. ייתכן שהיצרן מגביל בקשות רבות. |
+| *"קוד ה-SMS שגוי או שפג תוקפו"* | הקודים חד-פעמיים וקצרי חיים. חזרו אחורה ובקשו קוד חדש. |
+| הישויות לא זמינות | בדקו שהמכשיר מחובר באפליקציית SmartGrade ושיש ל-Home Assistant גישה לאינטרנט. |
+| מתבקשים להתחבר מחדש | תקין, פעם ב-30 יום. ראו [התחברות מחדש פעם בחודש](#%EF%B8%8F-התחברות-מחדש-פעם-בחודש). |
+| אין חיישני צריכה | המכשיר לא מדווח צריכה (לא לכל הדגמים יש מד). |
 
-**Debug logging:** add this to `configuration.yaml`, restart, reproduce the problem and attach the log to an issue (check it for personal data first):
+**לוג דיבאג:** הוסיפו ל-`configuration.yaml`, הפעילו מחדש, שחזרו את הבעיה וצרפו את הלוג ל-issue (בדקו קודם שאין בו מידע אישי):
+
+</div>
 
 ```yaml
 logger:
@@ -155,27 +155,31 @@ logger:
     custom_components.smartgrade: debug
 ```
 
-You can also download diagnostics from **Settings → Devices & services → SmartGrade Secure → ⋮ → Download diagnostics**; the token and phone number are redacted automatically.
+<div dir="rtl">
 
-## Disclaimer
+אפשר גם להוריד קובץ אבחון מ**הגדרות ← מכשירים ושירותים ← SmartGrade Secure ← ⋮ ← הורדת אבחון**; הטוקן ומספר הטלפון מוסתרים אוטומטית.
 
-- This project is **not affiliated with, endorsed by, or supported by IoTech Verticals Ltd. or Dealor**. "SmartGrade" and related names and logos are trademarks of their respective owners and are used here only to describe compatibility.
-- The vendor publishes no API. This integration uses the private cloud API of the official app, found through interoperability research, and may stop working at any time if the vendor changes it.
-- To talk to that API it uses the **app-level client credential that is embedded in the official app** (the same for every user). It is not a personal secret, but the vendor could revoke or rotate it at any moment, which would break the integration until it is updated.
-- Your phone number and the 30-day token are stored only in your Home Assistant configuration and are sent only to the vendor's cloud (`api.iotechv.com`).
-- These devices often switch high-power loads such as water heaters. Use automations responsibly. The software is provided "as is", without warranty of any kind; see the [LICENSE](LICENSE).
+## הסתייגות
 
-## Contributing
+- הפרויקט **אינו קשור ל-IoTech Verticals בע"מ או לדילאור, ואינו נתמך או מאושר על ידן**. "SmartGrade" והשמות והלוגואים הקשורים הם סימנים מסחריים של בעליהם, ומוזכרים כאן רק כדי לתאר תאימות.
+- היצרן לא מפרסם API. האינטגרציה משתמשת ב-API הפרטי של הענן שמשמש את האפליקציה הרשמית, שזוהה במחקר תאימות, והיא עלולה להפסיק לעבוד בכל רגע אם היצרן ישנה אותו.
+- כדי לדבר עם ה-API היא משתמשת ב**פרטי הזיהוי ברמת האפליקציה שמוטמעים באפליקציה הרשמית** (זהים לכל המשתמשים). אלה לא סוד אישי, אבל היצרן יכול לבטל או להחליף אותם בכל רגע, ואז האינטגרציה תפסיק לעבוד עד שתעודכן.
+- מספר הטלפון והטוקן ל-30 יום נשמרים רק בהגדרות של Home Assistant שלכם, ונשלחים רק לענן של היצרן (`api.iotechv.com`).
+- המכשירים האלה מפעילים לרוב עומסים גבוהים כמו דוד חשמל. השתמשו באוטומציות באחריות. התוכנה מסופקת "כמות שהיא" (AS IS), ללא אחריות מכל סוג; ראו [LICENSE](LICENSE).
 
-Contributions are welcome, especially reports from owners of models other than the boiler switch.
+## תרומה לפרויקט
 
-1. Fork the repository and create a branch.
-2. Set up a dev environment: `python -m venv .venv && . .venv/bin/activate && pip install -r requirements_test.txt`.
-3. Run `ruff check . && ruff format --check . && pytest`. The tests use recorded responses only; **never** add tests that call the real cloud or switch a real device.
-4. Open a pull request.
+נשמח לתרומות, ובמיוחד לדיווחים מבעלים של דגמים אחרים מלבד המתג לדוד.
 
-Technical background: [findings.md](findings.md) (reverse-engineering notes) and [VERIFIED.md](VERIFIED.md) (what was verified against the live service). Publishing steps: [PUBLISHING.md](PUBLISHING.md).
+1. עשו Fork למאגר וצרו branch.
+2. הקימו סביבת פיתוח: `python -m venv .venv && . .venv/bin/activate && pip install -r requirements_test.txt`.
+3. הריצו `ruff check . && ruff format --check . && pytest`. הבדיקות משתמשות רק בתשובות מוקלטות; **לעולם** אל תוסיפו בדיקות שפונות לענן האמיתי או מפעילות מכשיר אמיתי.
+4. פתחו Pull Request.
 
-## License
+רקע טכני: [findings.md](findings.md) (הערות ההנדסה ההפוכה) ו-[VERIFIED.md](VERIFIED.md) (מה אומת מול השירות החי). שלבי הפרסום: [PUBLISHING.md](PUBLISHING.md).
+
+## רישיון
 
 [MIT](LICENSE) © 2026 sobelman
+
+</div>

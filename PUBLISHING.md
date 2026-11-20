@@ -2,7 +2,7 @@
 
 How to take this repository from a local folder to an installable, discoverable Home Assistant integration, and what is (and is not) realistic beyond that.
 
-Repository slug used throughout: **`sobelman/ha-smartgrade`**, domain **`smartgrade`**. If you publish under another account, search-and-replace `sobelman/ha-smartgrade` (README.md, README.he.md, `manifest.json` `documentation` / `issue_tracker`) and `@sobelman` (`manifest.json` `codeowners`).
+Repository slug used throughout: **`sobelman/ha-smartgrade`**, domain **`smartgrade`**. If you publish under another account, search-and-replace `sobelman/ha-smartgrade` (README.md, README.en.md, `manifest.json` `documentation` / `issue_tracker`) and `@sobelman` (`manifest.json` `codeowners`).
 
 ## 1. Repository layout
 
@@ -17,7 +17,7 @@ ha-smartgrade/
 │   ├── strings.json, translations/{en,he}.json
 │   └── brand/icon.png, icon@2x.png <- local brand images (HA 2026.3+, satisfies the HACS "brands" check)
 ├── hacs.json                       <- name, country IL, minimum HA version
-├── README.md / README.he.md        <- rendered by HACS (render_readme: true)
+├── README.md / README.en.md        <- rendered by HACS (render_readme: true)
 ├── images/                         <- README images
 ├── tests/                          <- pytest + pytest-homeassistant-custom-component, mocked HTTP only
 ├── .github/workflows/validate.yaml <- HACS action + hassfest
