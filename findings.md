@@ -111,5 +111,5 @@ No local control path exists in the app. The only LAN code is **Wi-Fi provisioni
 ## 8. Files
 - `smartgrade_client.py` (not part of this repository) is a sync Python research client.
 - `custom_components/smartgrade/` is the Home Assistant integration: config flow (phone, then SMS code), reauth, a 30 s polling coordinator,
-  switch entities (one per `switch_N`), and power/current/voltage (+ diagnostic signal strength) sensors for every device that returns usage stats. MQTT push is a TODO.
+  switch entities (one per `switch_N`), power/current/voltage/power-factor/phase-2/3 sensors for every device that returns usage stats, read-only timers and next-action sensors, and diagnostics (signal, firmware, upgradeNow, online, last reading, max_on_min, MAC, device type). MQTT push is a TODO.
 - The decompiled sources and the APK are intentionally **not** distributed.

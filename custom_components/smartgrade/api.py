@@ -235,6 +235,49 @@ class SmartGradeApi:
         )
         return data if isinstance(data, dict) else None
 
+    async def get_timers(self, device_id: str) -> list[dict[str, Any]]:
+        """Return the timers of a device (read-only use).
+
+        Each timer is ``{id, name, is_enabled, timer_kind, timer_detail}``.
+        """
+        data = await self._request("GET", f"api/v1/devices/{device_id}/timers")
+        if isinstance(data, dict):
+            data = data.get("timers")
+        return [t for t in (data or []) if isinstance(t, dict)]
+
+    async def get_next_action(self, device_id: str) -> dict[str, Any] | None:
+        """Return the next scheduled action ``{ts, switch_N, created_by}``.
+
+        Returns None when nothing is scheduled.
+        """
+        try:
+            data = await self._request("GET", f"api/v1/devices/{device_id}/next_action")
+        except SmartGradeRequestError as err:
+            if err.status == 404:
+                return None
+            raise
+        if isinstance(data, dict) and isinstance(data.get("next_action"), dict):
+            data = data["next_action"]
+        if not isinstance(data, dict) or data.get("ts") is None:
+            return None
+        return data
+
+    async def get_future_actions(self, device_id: str) -> list[dict[str, Any]]:
+        """Return the upcoming scheduled actions of a device."""
+        try:
+            data = await self._request(
+                "GET", f"api/v1/devices/{device_id}/future_actions"
+            )
+        except SmartGradeRequestError as err:
+            if err.status == 404:
+                return []
+            raise
+        if isinstance(data, dict):
+            data = data.get("future_actions") or data.get("actions")
+        return [
+            a for a in (data or []) if isinstance(a, dict) and a.get("ts") is not None
+        ]
+
     async def set_switch(self, device_id: str, on: bool, switch: int = 1) -> None:
         """Turn relay ``switch`` of a device on or off.
 

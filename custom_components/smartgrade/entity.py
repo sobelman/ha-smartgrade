@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, MANUFACTURER, PRODUCT_NAMES
+from .const import DOMAIN, MANUFACTURER, device_mac, device_product_id, product_name
 from .coordinator import SmartGradeCoordinator, SmartGradeDeviceData
 
 
@@ -21,12 +21,14 @@ class SmartGradeEntity(CoordinatorEntity[SmartGradeCoordinator]):
         super().__init__(coordinator)
         self._device_id = device_id
         device = self.device
-        product_id = device.get("product_id")
+        product_id = device_product_id(device)
+        mac = device_mac(device_id)
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, device_id)},
+            connections={(CONNECTION_NETWORK_MAC, mac)} if mac else set(),
             name=device.get("name") or device_id,
             manufacturer=MANUFACTURER,
-            model=PRODUCT_NAMES.get(product_id, f"Product {product_id}"),
+            model=product_name(product_id),
             model_id=str(product_id) if product_id is not None else None,
             sw_version=device.get("firmware"),
             serial_number=device_id,

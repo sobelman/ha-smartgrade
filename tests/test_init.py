@@ -55,7 +55,7 @@ async def test_setup_and_unload(
     ent_reg = er.async_get(hass)
     assert ent_reg.async_get(SWITCH).unique_id == f"{DEVICE_ID}_switch_1"
     signal = ent_reg.async_get("sensor.boiler_signal_strength")
-    assert signal is not None and signal.disabled_by is not None
+    assert signal is not None and signal.disabled_by is None
     # No energy sensor: the live stats endpoint has no kWh field.
     assert not any(
         e.unique_id.endswith("kwh")
@@ -71,6 +71,7 @@ async def test_setup_and_unload(
     assert device.name == "Boiler"
     assert device.model == "Boiler switch (Gewiss 3-module)"
     assert device.sw_version == "20260410_var2_v2.9.2"
+    assert ("mac", "aa:bb:cc:dd:ee:ff") in device.connections
 
     assert await hass.config_entries.async_unload(mock_config_entry.entry_id)
     assert mock_config_entry.state is ConfigEntryState.NOT_LOADED

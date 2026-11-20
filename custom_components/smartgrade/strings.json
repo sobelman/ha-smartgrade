@@ -36,6 +36,97 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "firmware_update": {
+        "name": "Firmware update pending"
+      }
+    },
+    "sensor": {
+      "power_phase_2": {
+        "name": "Power phase 2"
+      },
+      "power_phase_3": {
+        "name": "Power phase 3"
+      },
+      "last_reading": {
+        "name": "Last reading"
+      },
+      "firmware": {
+        "name": "Firmware"
+      },
+      "max_on_time": {
+        "name": "Maximum on time"
+      },
+      "mac_address": {
+        "name": "MAC address"
+      },
+      "timers": {
+        "name": "Timers",
+        "state_attributes": {
+          "total": {
+            "name": "Total timers"
+          },
+          "timers": {
+            "name": "Timers"
+          }
+        }
+      },
+      "next_action": {
+        "name": "Next scheduled action",
+        "state_attributes": {
+          "action": {
+            "name": "Action",
+            "state": {
+              "on": "Turn on",
+              "off": "Turn off",
+              "mixed": "Mixed"
+            }
+          },
+          "switches": {
+            "name": "Relays"
+          },
+          "upcoming": {
+            "name": "Upcoming actions"
+          }
+        }
+      },
+      "device_type": {
+        "name": "Device type",
+        "state": {
+          "product_2": "Smart adapter for Israeli socket",
+          "product_5": "Smart switch for 16A socket",
+          "product_6": "Boiler switch (under plaster)",
+          "product_7": "Wi-Fi switch (box 55)",
+          "product_8": "Boiler switch (Gewiss 3-module)",
+          "product_9": "Light switch, 3 gangs (Gewiss)",
+          "product_10": "Light switch, 2 gangs (Gewiss)",
+          "product_11": "Light switch, 1 gang (Gewiss)",
+          "product_12": "Light switch, 1 gang (box 55)",
+          "product_13": "Light switch, 2 gangs (box 55)",
+          "product_14": "DIN rail switch, 1-phase 16A",
+          "product_15": "DIN rail switch, 3-phase 30A",
+          "product_16": "Smart socket (box 55)",
+          "product_17": "Smart socket (Gewiss 3-module)",
+          "product_18": "Smart shutter",
+          "product_19": "Smart shutter",
+          "product_20": "Smart AC panel",
+          "product_21": "Smart gateway (Zigbee)",
+          "product_22": "DIN rail switch, 1-phase 63A",
+          "product_23": "Smart power meter",
+          "product_24": "Smart AC panel",
+          "product_25": "Smart IR controller",
+          "product_26": "Smart motion sensor",
+          "product_27": "Smart water leak sensor",
+          "product_28": "Smart smoke sensor",
+          "product_29": "Smart gas sensor",
+          "product_30": "Smart AC panel I",
+          "product_31": "Smart temperature/humidity sensor",
+          "product_35": "Smart IR controller",
+          "product_36": "Smart shutter",
+          "other": "Other device"
+        }
+      }
+    },
     "switch": {
       "relay": {
         "name": "Relay {number}"

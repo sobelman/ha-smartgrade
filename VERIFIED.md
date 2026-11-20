@@ -19,6 +19,7 @@ All confirmed against the real server https://api.iotechv.com — no emulator ne
 - Whether an HA login (new JWT) logs the phone app out, or vice versa.
 - MQTT push: whether the broker accepts a clientId different from the user id. Reusing the user id as clientId disconnects the phone, so the integration polls instead.
 - Devices with 2 or 3 relays (`switch_2`, `switch_3`), shutters, thermostats, IR and sensor products — only a single-relay boiler switch (product_id 8) was tested.
-- Units/range of `powerFactor`, `watt2`, `watt3` (3-phase?) and the timezone/format of `createdAt`; these are not exposed as entities yet.
+- Units/range of `powerFactor`, `watt2`, `watt3` (3-phase?) and the timezone/format of `createdAt`. Since v0.2.0 they are exposed best-effort (power factor as a 0–1 ratio, `createdAt` parsed as ISO 8601 or epoch, phase 2/3 power enabled by default only on 3-phase products).
+- The response shapes of `next_action`, `future_actions` and `timers` (taken from the app's models, not captured live), the meaning of `upgradeNow`, and the units of the `/kwh` history (not exposed).
 - Exact HTTP status codes for a wrong SMS code / rejected phone number (the integration treats any 4xx as "invalid").
 - Rate limits of the cloud API (none hit at a 30 s poll interval).

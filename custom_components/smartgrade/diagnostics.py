@@ -20,6 +20,9 @@ TO_REDACT = {
     "user_id",
     "name",
     "site_name",
+    "created_by",
+    "street_name",
+    "street_number",
 }
 
 

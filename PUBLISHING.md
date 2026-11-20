@@ -12,7 +12,7 @@ HACS and the Home Assistant Marketplace (built into HA 2026.11+, it uses the sam
 ha-smartgrade/
 ├── custom_components/smartgrade/   <- what gets installed into <config>/custom_components/
 │   ├── __init__.py, api.py, config_flow.py, coordinator.py, const.py,
-│   ├── entity.py, switch.py, sensor.py, diagnostics.py
+│   ├── entity.py, switch.py, sensor.py, binary_sensor.py, diagnostics.py
 │   ├── manifest.json               <- must contain "version"
 │   ├── strings.json, translations/{en,he}.json
 │   └── brand/icon.png, icon@2x.png <- local brand images (HA 2026.3+, satisfies the HACS "brands" check)
@@ -64,9 +64,14 @@ Repository-level HACS checks that only pass once the GitHub repo is configured: 
 HACS shows release tags as versions. Bump `version` in `manifest.json`, then:
 
 ```bash
-git tag v0.1.0 && git push --tags
-gh release create v0.1.0 --title "v0.1.0" --notes "First public release."
+# example for 0.2.0 — use the version you just put in manifest.json
+git tag v0.2.0 && git push --tags
+gh release create v0.2.0 --title "v0.2.0" --notes-file RELEASE_NOTES.md
 ```
+
+Releases so far: `v0.1.0` (first public release), `v0.2.0` (read-only diagnostics, timers, next action, 3-phase metering, all product types).
+
+`main` is protected (required status checks, linear history). Normally push changes through a pull request and merge once **Validate** and **Tests** are green.
 
 A full GitHub **release** is required (a bare tag is not enough for the default catalog). Keep `manifest.json` `version` equal to the tag (without the `v`). Raise `hacs.json` `homeassistant` if you start using newer HA APIs.
 

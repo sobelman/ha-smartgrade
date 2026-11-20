@@ -29,30 +29,38 @@ This integration (domain `smartgrade`) logs in to the same cloud the app uses, w
 
 - ✅ UI setup: phone number → SMS code. No YAML.
 - ✅ One **switch** entity per relay (1–3 relays per device).
-- ✅ **Power (W)**, **current (A)** and **voltage (V)** sensors for every device that reports metering.
-- ✅ Diagnostic **Wi-Fi signal strength** sensor (disabled by default).
-- ✅ Devices grouped by unit, with model and firmware version.
-- ✅ Entities become *unavailable* when the cloud reports the device offline.
+- ✅ **Power (W)**, **current (A)**, **voltage (V)** and **power factor** sensors for every device that reports metering, plus **phase 2 / phase 3 power** on 3-phase devices.
+- ✅ **Read-only timers**: how many timers are enabled, and for each one its name, kind, days, on/off times and relays.
+- ✅ **Next scheduled action**: when it runs and what it does (on/off), plus the list of upcoming actions.
+- ✅ Diagnostics: **Wi-Fi signal strength**, **firmware version**, **firmware update pending**, **online/offline**, **last reading time**, **maximum on time**, **MAC address** and **device type**.
+- ✅ Devices grouped by unit, with model, firmware version and MAC address.
+- ✅ Works with every vendor product type, not just the boiler switch: devices with 1–3 relays get switches, and every device gets diagnostic sensors.
+- ✅ Entities become *unavailable* when the cloud reports the device offline (the connectivity sensor itself stays available and shows *disconnected*).
 - ✅ Simple re-sign-in when the vendor's 30-day login expires ([why](#%EF%B8%8F-signing-in-again-once-a-month)).
 - ✅ Downloadable diagnostics with the token and phone number redacted.
 - ✅ English and Hebrew translations.
 
 ## Supported devices
 
-Relay devices are exposed as switches. Tested live: **product 8, boiler switch (Gewiss 3-module)**. The others use the same API and are expected to work; please [open an issue](https://github.com/sobelman/ha-smartgrade/issues) with your results.
+The integration works with every `product_id`: each device gets the right model name, diagnostic sensors and (if it reports them) metering sensors. Devices with relays get one switch per relay. Only **product 8, boiler switch (Gewiss 3-module)** has been tested live; the others use the same API but are untested. Please [open an issue](https://github.com/sobelman/ha-smartgrade/issues) with your results.
 
-| product_id | Device | Status |
-|---|---|---|
-| 8 | Boiler switch (Gewiss 3-module) | ✅ Tested |
-| 6 | Boiler switch (under plaster) | 🟡 Expected to work |
-| 7 | Wi-Fi switch (box 55) | 🟡 Expected to work |
-| 2, 5, 16, 17 | Smart sockets | 🟡 Expected to work |
-| 9–13 | Light switches (1–3 gangs) | 🟡 Expected to work |
-| 14, 15, 22 | DIN-rail switches (1-phase, 3-phase, 63A) | 🟡 Expected to work |
-| 18, 19, 36 | Shutters | ❌ Not supported yet |
-| 20, 24, 25, 30, 35 | Thermostat / IR / A/C | ❌ Not supported yet |
-| 26–29, 31 | Sensors | ❌ Not supported yet |
-| 21 | Zigbee gateway | ❌ Not supported |
+| product_id | Device | What you get | Status |
+|---|---|---|---|
+| 8 | Boiler switch (Gewiss 3-module) | Switch, metering, timers, diagnostics | ✅ Tested |
+| 6 | Boiler switch (under plaster) | Switch, metering, timers, diagnostics | 🟡 Untested |
+| 7 | Wi-Fi switch (box 55) | Switch, metering, timers, diagnostics | 🟡 Untested |
+| 2, 5, 16, 17 | Smart sockets and adapters | Switch, metering, timers, diagnostics | 🟡 Untested |
+| 9–13 | Light switches (1–3 gangs) | One switch per gang, timers, diagnostics | 🟡 Untested |
+| 14, 22 | 1-phase DIN-rail switches (16A, 63A) | Switch, metering, timers, diagnostics | 🟡 Untested |
+| 15 | 3-phase DIN-rail switch | Switch, metering incl. phase 2/3, timers, diagnostics | 🟡 Untested |
+| 23 | Smart power meter | Metering (incl. phase 2/3), diagnostics | 🟡 Untested |
+| 18, 19, 36 | Shutters | Up/down relays as switches, **disabled by default**; diagnostics | 🟠 Partial |
+| 20, 24, 25, 30, 35 | A/C panel / IR | Diagnostics only | 🟠 Partial |
+| 26–29, 31 | Sensors (motion, leak, smoke, gas, temp/humidity) | Diagnostics only | 🟠 Partial |
+| 21 | Zigbee gateway | Diagnostics only | 🟠 Partial |
+| other | Unknown product | Diagnostics, plus switches if the cloud reports a relay | 🟡 Untested |
+
+**Shutters:** there is no `cover` entity yet, because how the cloud represents shutter state and position has not been verified. The relays are exposed as switches that are disabled by default; only enable them if you know what you are doing.
 
 ## Requirements
 
@@ -116,24 +124,39 @@ Until you do, your SmartGrade entities show as *unavailable* in Home Assistant. 
 
 ## Entities
 
-For a device named *Boiler*:
+For a device named *Boiler* (example IDs; the real ones depend on the device name and your system language):
 
 | Entity | Example ID | Description |
 |---|---|---|
-| Switch | `switch.boiler` | Relay 1. Additional relays: `switch.boiler_relay_2`, `…_relay_3` (or the relay names set in the app). |
+| Switch | `switch.boiler` | Relay 1. Additional relays: `switch.boiler_relay_2`, `…_relay_3`, or the per-relay names set in the app. |
 | Power | `sensor.boiler_power` | Live power draw, W. |
+| Power phase 2 / 3 | `sensor.boiler_power_phase_2`, `…_phase_3` | Power on phases 2 and 3, W. Enabled by default only on 3-phase products (15, 23). |
 | Current | `sensor.boiler_current` | Live current, A. |
 | Voltage | `sensor.boiler_voltage` | Mains voltage, V. |
-| Signal strength | `sensor.boiler_signal_strength` | Wi-Fi RSSI, dBm. Diagnostic, disabled by default. |
+| Power factor | `sensor.boiler_power_factor` | Power factor (0–1). |
+| Timers | `sensor.boiler_timers` | **Read-only.** State: number of enabled timers. Attributes: every timer with name, enabled, kind (`recurring`/`normal`/`pattern`/`off_on`), days, on/off times or on/off minutes, date range and relays. |
+| Next scheduled action | `sensor.boiler_next_scheduled_action` | **Read-only.** When the next scheduled action runs; attributes: what it does (on/off), which relays, and up to 10 upcoming actions. |
+| Connectivity | `binary_sensor.boiler_connectivity` | Diagnostic. Whether the cloud sees the device online. |
+| Firmware update pending | `binary_sensor.boiler_firmware_update_pending` | Diagnostic. The cloud's `upgradeNow` flag (exact meaning not verified). |
+| Signal strength | `sensor.boiler_signal_strength` | Diagnostic. Wi-Fi RSSI, dBm. |
+| Firmware | `sensor.boiler_firmware` | Diagnostic. |
+| Last reading | `sensor.boiler_last_reading` | Diagnostic. When the device last sent a metering reading. |
+| Maximum on time | `sensor.boiler_maximum_on_time` | Diagnostic. The device's safety limit (`max_on_min`), in minutes. |
+| MAC address | `sensor.boiler_mac_address` | Diagnostic. The device's cloud id is its MAC address. |
+| Device type | `sensor.boiler_device_type` | Diagnostic. Product type (translated), with `product_id` as an attribute. |
 
-**Energy dashboard:** the cloud's live reading has no kWh counter. Create an *Integral (Riemann sum)* helper from `sensor.boiler_power` (method *left*, unit prefix *k*) and add it to the Energy dashboard.
+Sensors are only created when the cloud returns a value for them, so a device that doesn't report a field won't get an empty entity. Timers and the next action are refreshed every 5 minutes, and right after a switch command.
+
+**Not exposed by the cloud:** the IP address and the Wi-Fi network name (SSID) are **not** available from the vendor's API, so they can't be shown. Account details (name, phone, email) are intentionally not shown either.
+
+**Energy dashboard:** the cloud's live reading has no kWh counter. The cloud does have a consumption history (`/kwh`), but its units and meaning have not been verified against a real device yet, so it is not exposed. Until then, create an *Integral (Riemann sum)* helper from `sensor.boiler_power` (method *left*, unit prefix *k*) and add it to the Energy dashboard.
 
 ## Important notes
 
 - **A new SMS code is needed every 30 days.** See [Signing in again once a month](#%EF%B8%8F-signing-in-again-once-a-month).
 - **Possible conflict with the phone app.** It has not been confirmed whether a new login from Home Assistant signs the phone app out (or the reverse). If your app suddenly asks you to log in again, that is probably why; both can be logged in again afterwards.
 - **Cloud only.** Devices cannot be controlled locally. If the vendor's cloud or your internet connection is down, the entities become unavailable.
-- **Timers and scenes** you set in the app keep running in the cloud; this integration does not show or change them.
+- **Timers and scenes** you set in the app keep running in the cloud, even when Home Assistant is off. The integration **shows** timers and the next action, but **never** creates, changes or deletes them.
 - Switch commands are sent through the cloud; the state shown is re-read from the cloud a moment later.
 
 ## Troubleshooting

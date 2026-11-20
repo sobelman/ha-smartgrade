@@ -10,18 +10,11 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SmartGradeError
-from .const import DOMAIN, SWITCH_PRODUCTS
+from .const import DOMAIN, SHUTTER_PRODUCTS, device_product_id, relay_count
 from .coordinator import SmartGradeConfigEntry, SmartGradeCoordinator
 from .entity import SmartGradeEntity
 
 PARALLEL_UPDATES = 1
-
-
-def _switch_count(device: dict[str, Any]) -> int:
-    try:
-        return min(3, max(1, int(device.get("switch_num") or 1)))
-    except (TypeError, ValueError):
-        return 1
 
 
 async def async_setup_entry(
@@ -34,8 +27,7 @@ async def async_setup_entry(
     async_add_entities(
         SmartGradeSwitch(coordinator, dev_id, number)
         for dev_id, item in coordinator.data.items()
-        if item.device.get("product_id") in SWITCH_PRODUCTS
-        for number in range(1, _switch_count(item.device) + 1)
+        for number in range(1, relay_count(item.device) + 1)
     )
 
 
@@ -60,6 +52,9 @@ class SmartGradeSwitch(SmartGradeEntity, SwitchEntity):
         else:
             self._attr_translation_key = "relay"
             self._attr_translation_placeholders = {"number": str(number)}
+        if device_product_id(self.device) in SHUTTER_PRODUCTS:
+            # Shutter relays (up/down) are unverified: opt-in only.
+            self._attr_entity_registry_enabled_default = False
 
     @property
     def is_on(self) -> bool | None:
@@ -76,7 +71,9 @@ class SmartGradeSwitch(SmartGradeEntity, SwitchEntity):
                 translation_key="switch_failed",
                 translation_placeholders={"error": str(err)},
             ) from err
-        # The toggle response may echo a stale state, so re-read the device list.
+        # The toggle response may echo a stale state, so re-read the device list
+        # (and the schedule, since a manual toggle can change the next action).
+        self.coordinator.request_extras_refresh()
         await self.coordinator.async_request_refresh()
 
     async def async_turn_on(self, **kwargs: Any) -> None:

@@ -10,7 +10,7 @@ from .api import SmartGradeApi
 from .const import CONF_JWT, CONF_USER_ID
 from .coordinator import SmartGradeConfigEntry, SmartGradeCoordinator
 
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.SWITCH]
+PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.SWITCH]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: SmartGradeConfigEntry) -> bool:
