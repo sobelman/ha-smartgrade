@@ -6,11 +6,7 @@
 
 **English** | [עברית](README.md)
 
-[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration)
-[![Validate](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml)
-[![Tests](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/sobelman/ha-smartgrade)](https://github.com/sobelman/ha-smartgrade/releases)
+[![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration) [![Validate](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml) [![Tests](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![GitHub release](https://img.shields.io/github/v/release/sobelman/ha-smartgrade)](https://github.com/sobelman/ha-smartgrade/releases)
 
 <img src="images/smartgrade-product.jpg" alt="SmartGrade smart boiler switch" width="420">
 
@@ -70,18 +66,20 @@ The integration works with every `product_id`: each device gets the right model 
 
 ## Installation
 
-### Marketplace / HACS (recommended)
+### HACS (recommended)
 
-Click the button below. On Home Assistant **2026.11+** it opens the repository in the built-in **Marketplace** (Settings → Marketplace); on older versions it opens **HACS**. Either way you are offered to add it as a custom repository, then click **Download** and restart.
+The integration is in the HACS default list. Search for it and install it directly; there is no need to add a custom repository.
+
+In newer versions of Home Assistant, HACS may appear in the sidebar as **Marketplace**.
+
+1. Open **HACS** (or **Marketplace** in the sidebar).
+2. Search for **SmartGrade**.
+3. Click **Download**, then **restart** Home Assistant.
+4. Go to **Settings → Devices & services → Add integration** and search for **SmartGrade**.
+
+You can also open it in HACS with this button:
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration)
-
-Or manually in HACS:
-
-1. Open **HACS** → ⋮ (top right) → **Custom repositories**.
-2. Repository: `https://github.com/sobelman/ha-smartgrade`, type: **Integration** → **Add**.
-3. Search for **SmartGrade Secure**, open it and click **Download**.
-4. **Restart** Home Assistant.
 
 ### Manual
 

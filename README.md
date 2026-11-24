@@ -6,11 +6,7 @@
 
 [English](README.en.md) | **עברית**
 
-[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration)
-[![Validate](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml)
-[![Tests](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/sobelman/ha-smartgrade)](https://github.com/sobelman/ha-smartgrade/releases)
+[![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration) [![Validate](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/validate.yaml) [![Tests](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml/badge.svg)](https://github.com/sobelman/ha-smartgrade/actions/workflows/tests.yaml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![GitHub release](https://img.shields.io/github/v/release/sobelman/ha-smartgrade)](https://github.com/sobelman/ha-smartgrade/releases)
 
 <img src="images/smartgrade-product.jpg" alt="מתג חכם לדוד של SmartGrade" width="420">
 
@@ -72,24 +68,26 @@
 
 ## התקנה
 
-### דרך ה-Marketplace או HACS (מומלץ)
+### דרך HACS (מומלץ)
 
-לחצו על הכפתור. ב-Home Assistant **2026.11 ומעלה** הוא פותח את המאגר ב-**Marketplace** המובנה (הגדרות ← Marketplace); בגרסאות ישנות יותר הוא פותח את **HACS**. בשני המקרים תוצע הוספה כמאגר מותאם אישית, ואז לוחצים **Download** ומפעילים מחדש.
+האינטגרציה נמצאת ברשימת ברירת המחדל של HACS‏. חפשו אותה והתקינו ישירות, בלי להוסיף מאגר מותאם אישית.
+
+בגרסאות חדשות של Home Assistant‏, HACS עשוי להופיע בסרגל הצד בשם **Marketplace**‏.
+
+1. פתחו את **HACS** (או **Marketplace** בסרגל הצד).
+2. חפשו **SmartGrade**‏.
+3. לחצו **Download**‏, ואז **הפעילו מחדש** את Home Assistant‏.
+4. **הגדרות ← מכשירים ושירותים ← הוספת אינטגרציה**, וחפשו **SmartGrade**‏.
+
+אפשר גם לפתוח את העמוד ב-HACS בלחיצה על הכפתור:
 
 [![פתיחת המאגר ב-HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sobelman&repository=ha-smartgrade&category=integration)
-
-או ידנית ב-HACS:
-
-1. פתחו את **HACS** ← ⋮ (למעלה מימין) ← **Custom repositories**.
-2. כתובת המאגר: `https://github.com/sobelman/ha-smartgrade`, סוג: **Integration** ← **Add**.
-3. חפשו **SmartGrade Secure**, פתחו ולחצו **Download**.
-4. **הפעילו מחדש** את Home Assistant.
 
 ### התקנה ידנית
 
 1. הורידו את [הגרסה האחרונה](https://github.com/sobelman/ha-smartgrade/releases).
 2. העתיקו את התיקייה `custom_components/smartgrade` לתיקייה `config/custom_components/` של Home Assistant, כך שיתקבל `config/custom_components/smartgrade/manifest.json`.
-3. **הפעילו מחדש** את Home Assistant.
+3. **הפעילו מחדש** את Home Assistant‏.
 
 ## הגדרה
 
