@@ -54,13 +54,13 @@ The integration works with every `product_id`: each device gets the right model 
 | 14, 22 | 1-phase DIN-rail switches (16A, 63A) | Switch, metering, timers, diagnostics | 🟡 Untested |
 | 15 | 3-phase DIN-rail switch | Switch, metering incl. phase 2/3, timers, diagnostics | 🟡 Untested |
 | 23 | Smart power meter | Metering (incl. phase 2/3), diagnostics | 🟡 Untested |
-| 18, 19, 36 | Shutters | Up/down relays as switches, **disabled by default**; diagnostics | 🟠 Partial |
+| 18, 19, 36 | Shutters | Diagnostics only | 🟠 Partial |
 | 20, 24, 25, 30, 35 | A/C panel / IR | Diagnostics only | 🟠 Partial |
 | 26–29, 31 | Sensors (motion, leak, smoke, gas, temp/humidity) | Diagnostics only | 🟠 Partial |
 | 21 | Zigbee gateway | Diagnostics only | 🟠 Partial |
 | other | Unknown product | Diagnostics, plus switches if the cloud reports a relay | 🟡 Untested |
 
-**Shutters:** there is no `cover` entity yet, because how the cloud represents shutter state and position has not been verified. The relays are exposed as switches that are disabled by default; only enable them if you know what you are doing.
+**Shutters:** shutter control is not supported yet. Diagnostic sensors are available; a cover entity will be added in a later release once the behaviour is confirmed on a real shutter.
 
 ## Requirements
 

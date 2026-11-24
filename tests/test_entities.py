@@ -420,19 +420,70 @@ async def test_multi_relay_light_switch(
     assert device.model == "Light switch, 2 gangs (Gewiss)"
 
 
-async def test_shutter_relays_disabled_by_default(
+async def test_shutter_products_have_no_switch_entities(
     hass: HomeAssistant,
     aioclient_mock: AiohttpClientMocker,
     mock_config_entry: MockConfigEntry,
 ) -> None:
-    """Shutter relays are exposed as opt-in switches (no cover entity)."""
-    devices = [{**device_list()[0], "product_id": 18, "switch_num": 2}]
-    mock_cloud(aioclient_mock, devices=devices)
+    """Shutters get diagnostics only; switch and non-relay products are unchanged."""
+    shutter_ids = {18: "111111111111", 19: "222222222222", 36: "333333333333"}
+    light = _other_device(
+        id="444444444444",
+        name="Lights",
+        product_id=10,
+        switch_num=2,
+        switch_1=True,
+        switch_1_name="Kitchen",
+        switch_2=False,
+        switch_2_name="Hall",
+    )
+    motion = _other_device(
+        id="555555555555", name="Motion", product_id=26, switch_1=None
+    )
+    shutters = [
+        {
+            **device_list()[0],
+            "id": dev_id,
+            "name": f"Shutter {pid}",
+            "product_id": pid,
+            "switch_num": 2,
+            "switch_1": False,
+            "switch_2": False,
+        }
+        for pid, dev_id in shutter_ids.items()
+    ]
+    mock_cloud(aioclient_mock, devices=[device_list()[0], *shutters, light, motion])
+    for dev_id in [*shutter_ids.values(), "444444444444", "555555555555"]:
+        aioclient_mock.get(
+            BASE_URL + f"api/v1/devices/{dev_id}/last_usage_stats", status=404
+        )
+        mock_schedule(aioclient_mock, dev_id, next_payload={}, future_payload=[])
     await setup_entry(hass, mock_config_entry)
-    switches = [e for e in _entries(hass, mock_config_entry) if e.domain == "switch"]
-    assert len(switches) == 2
-    assert all(e.disabled_by is not None for e in switches)
-    assert not any(e.domain == "cover" for e in _entries(hass, mock_config_entry))
+
+    entries = _entries(hass, mock_config_entry)
+    unique_ids = {e.unique_id for e in entries}
+    switch_ids = {e.unique_id for e in entries if e.domain == "switch"}
+
+    for dev_id in shutter_ids.values():
+        assert f"{dev_id}_switch_1" not in unique_ids
+        assert f"{dev_id}_switch_2" not in unique_ids
+        assert f"{dev_id}_is_online" in unique_ids
+        assert f"{dev_id}_device_type" in unique_ids
+        assert f"{dev_id}_mac" in unique_ids
+
+    assert not any(e.domain == "cover" for e in entries)
+    assert switch_ids == {
+        f"{DEVICE_ID}_switch_1",
+        "444444444444_switch_1",
+        "444444444444_switch_2",
+    }
+    assert "555555555555_switch_1" not in unique_ids
+    assert hass.states.get("switch.boiler") is not None
+    assert hass.states.get("switch.lights_kitchen").state == STATE_ON
+    assert hass.states.get("switch.lights_hall").state == STATE_OFF
+    assert hass.states.get("sensor.shutter_18_device_type").state == "product_18"
+    assert hass.states.get("sensor.shutter_19_device_type").state == "product_19"
+    assert hass.states.get("sensor.shutter_36_device_type").state == "product_36"
 
 
 async def test_non_relay_and_unknown_products(
@@ -517,6 +568,9 @@ def test_helpers() -> None:
     assert relay_count({"product_id": 8, "switch_num": 9}) == 3
     assert relay_count({"product_id": 8, "switch_num": "x"}) == 1
     assert relay_count({"product_id": 23}) == 0
+    assert relay_count({"product_id": 18, "switch_num": 2}) == 0
+    assert relay_count({"product_id": 19, "switch_1": True}) == 0
+    assert relay_count({"product_id": 36}) == 0
 
     expected = datetime(2026, 11, 20, 19, 0, tzinfo=UTC)
     epoch = int(expected.timestamp())

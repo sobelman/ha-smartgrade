@@ -69,7 +69,7 @@ git tag v0.2.0 && git push --tags
 gh release create v0.2.0 --title "v0.2.0" --notes-file RELEASE_NOTES.md
 ```
 
-Releases so far: `v0.1.0` (first public release), `v0.2.0` (read-only diagnostics, timers, next action, 3-phase metering, all product types).
+Releases so far: `v0.1.0` (first public release), `v0.2.0` (read-only diagnostics, timers, next action, 3-phase metering, all product types), `v0.2.1` (remove unverified shutter relay switches; shutters stay diagnostics-only until confirmed on a real shutter).
 
 `main` is protected (required status checks, linear history). Normally push changes through a pull request and merge once **Validate** and **Tests** are green.
 

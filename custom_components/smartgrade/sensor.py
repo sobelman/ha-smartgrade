@@ -32,6 +32,7 @@ from homeassistant.util import dt as dt_util
 
 from .const import (
     PRODUCTS,
+    SHUTTER_PRODUCTS,
     THREE_PHASE_PRODUCTS,
     device_mac,
     device_product_id,
@@ -107,6 +108,14 @@ def _has_key(key: str) -> Callable[[SmartGradeDeviceData], bool]:
 
 def _three_phase(data: SmartGradeDeviceData) -> bool:
     return device_product_id(data.device) in THREE_PHASE_PRODUCTS
+
+
+def _has_switch_or_shutter(data: SmartGradeDeviceData) -> bool:
+    """Return whether the device exposes switches, or is a shutter."""
+    return (
+        relay_count(data.device) > 0
+        or device_product_id(data.device) in SHUTTER_PRODUCTS
+    )
 
 
 def _device_type(data: SmartGradeDeviceData) -> str:
@@ -354,7 +363,7 @@ SENSORS: tuple[SmartGradeSensorDescription, ...] = (
         key="timers",
         translation_key="timers",
         value_fn=_timers_count,
-        exists_fn=lambda data: data.timers is not None or relay_count(data.device) > 0,
+        exists_fn=lambda data: data.timers is not None or _has_switch_or_shutter(data),
         attrs_fn=_timers_attrs,
     ),
     SmartGradeSensorDescription(
@@ -362,7 +371,7 @@ SENSORS: tuple[SmartGradeSensorDescription, ...] = (
         translation_key="next_action",
         device_class=SensorDeviceClass.TIMESTAMP,
         value_fn=_next_action,
-        exists_fn=lambda data: relay_count(data.device) > 0,
+        exists_fn=_has_switch_or_shutter,
         attrs_fn=_next_action_attrs,
     ),
 )

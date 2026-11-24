@@ -10,7 +10,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SmartGradeError
-from .const import DOMAIN, SHUTTER_PRODUCTS, device_product_id, relay_count
+from .const import DOMAIN, relay_count
 from .coordinator import SmartGradeConfigEntry, SmartGradeCoordinator
 from .entity import SmartGradeEntity
 
@@ -52,9 +52,6 @@ class SmartGradeSwitch(SmartGradeEntity, SwitchEntity):
         else:
             self._attr_translation_key = "relay"
             self._attr_translation_placeholders = {"number": str(number)}
-        if device_product_id(self.device) in SHUTTER_PRODUCTS:
-            # Shutter relays (up/down) are unverified: opt-in only.
-            self._attr_entity_registry_enabled_default = False
 
     @property
     def is_on(self) -> bool | None:

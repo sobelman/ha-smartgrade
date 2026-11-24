@@ -74,9 +74,9 @@ SWITCH_PRODUCTS: Final = frozenset(
     {2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 22}
 )
 
-# Shutters drive an up and a down relay. How the cloud maps their state and
-# position is not verified, so their relays are exposed as switches that are
-# disabled by default instead of as a cover entity.
+# Shutter products drive an up and a down relay. Control is not supported yet
+# (diagnostic sensors only). A cover entity can be added later, once the
+# behaviour is confirmed on a real shutter.
 SHUTTER_PRODUCTS: Final = frozenset({18, 19, 36})
 
 # Products without user-facing relays: AC panels, IR, gateway, power meter
@@ -112,19 +112,17 @@ def product_name(product_id: int | None) -> str:
 
 
 def relay_count(device: dict[str, Any]) -> int:
-    """Return how many relays (switch_1..switch_3) a device exposes.
+    """Return how many relays (switch_1..switch_3) a device exposes as switches.
 
-    Known relay and shutter products always have at least one relay. Products
-    without relays get none. Unknown products get relays only when the cloud
-    reports a boolean ``switch_1``.
+    Known switch products always have at least one relay. Shutter products and
+    products without relays get none. Unknown products get relays only when the
+    cloud reports a boolean ``switch_1``.
     """
     product_id = device_product_id(device)
-    if product_id in NON_RELAY_PRODUCTS:
+    if product_id in NON_RELAY_PRODUCTS or product_id in SHUTTER_PRODUCTS:
         return 0
-    if (
-        product_id not in SWITCH_PRODUCTS
-        and product_id not in SHUTTER_PRODUCTS
-        and not isinstance(device.get("switch_1"), bool)
+    if product_id not in SWITCH_PRODUCTS and not isinstance(
+        device.get("switch_1"), bool
     ):
         return 0
     try:
